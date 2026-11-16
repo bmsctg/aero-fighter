@@ -1,0 +1,447 @@
+/* Aero Fighters: Sky Guardians Styles */
+
+:root {
+  --primary-color: #ffcc00;
+  --secondary-color: #00d2ff;
+  --accent-color: #ff3366;
+  --bg-dark: #0a0e17;
+  --card-bg: rgba(18, 28, 48, 0.85);
+  --ui-font: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  --arcade-font: 'Impact', 'Arial Black', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-dark);
+  color: #fff;
+  font-family: var(--ui-font);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Wrapper to maintain arcade aspect ratio (9:16) while responsive */
+#game-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  max-width: min(100vw, calc(100vh * (9 / 16)));
+  max-height: min(100vh, calc(100vw * (16 / 9)));
+  aspect-ratio: 9 / 16;
+  background: #000;
+  box-shadow: 0 0 35px rgba(0, 180, 255, 0.3), 0 0 10px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#gameCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+  background: #060b14;
+  image-rendering: auto;
+}
+
+/* UI Overlays */
+#ui-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.ui-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(6, 12, 24, 0.88);
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 20px;
+  pointer-events: auto;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.ui-screen.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.96);
+}
+
+/* Title Screen Header */
+.logo-container {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.sub-title {
+  color: var(--secondary-color);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+  text-shadow: 0 0 10px rgba(0, 210, 255, 0.6);
+}
+
+.game-title {
+  font-family: var(--arcade-font);
+  font-size: clamp(34px, 8vw, 46px);
+  font-style: italic;
+  font-weight: 900;
+  letter-spacing: 2px;
+  background: linear-gradient(180deg, #fff700 0%, #ff8800 50%, #ff0044 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 12px rgba(255, 51, 102, 0.6));
+  line-height: 1.1;
+}
+
+.edition-badge {
+  display: inline-block;
+  background: #00d2ff;
+  color: #061121;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 3px 12px;
+  border-radius: 12px;
+  letter-spacing: 1.5px;
+  margin-top: 6px;
+  box-shadow: 0 0 12px rgba(0, 210, 255, 0.8);
+}
+
+/* Plane Selection Carousel */
+.plane-select-section {
+  width: 100%;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.plane-select-section h2 {
+  font-size: 14px;
+  letter-spacing: 1.5px;
+  color: #a0aec0;
+  margin-bottom: 12px;
+}
+
+.plane-carousel {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+}
+
+.plane-card {
+  flex: 1;
+  background: var(--card-bg);
+  border: 2px solid #2d3748;
+  border-radius: 14px;
+  padding: 12px 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.plane-card:hover {
+  transform: translateY(-4px);
+  border-color: #4a5568;
+}
+
+.plane-card.selected {
+  border-color: var(--primary-color);
+  background: rgba(30, 45, 75, 0.95);
+  box-shadow: 0 0 16px rgba(255, 204, 0, 0.45);
+  transform: translateY(-4px) scale(1.03);
+}
+
+.plane-preview {
+  width: 58px;
+  height: 58px;
+  margin-bottom: 6px;
+}
+
+.plane-name {
+  font-weight: 800;
+  font-size: 12px;
+  margin-bottom: 6px;
+  color: #fff;
+}
+
+.plane-stat-bars {
+  width: 100%;
+  padding: 0 4px;
+  font-size: 9px;
+  color: #cbd5e0;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3px;
+}
+
+.stat-bar {
+  width: 55%;
+  height: 5px;
+  background: #2d3748;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.stat-fill {
+  height: 100%;
+  background: var(--primary-color);
+  border-radius: 3px;
+}
+
+/* Controls Hint */
+.controls-hint {
+  background: rgba(16, 24, 40, 0.7);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1.4;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.controls-hint strong {
+  color: #e2e8f0;
+}
+
+/* Arcade Buttons */
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 280px;
+}
+
+.arcade-btn {
+  font-family: var(--arcade-font);
+  font-size: 18px;
+  letter-spacing: 1px;
+  padding: 12px 20px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-transform: uppercase;
+}
+
+.primary-btn {
+  background: linear-gradient(180deg, #ffdd00 0%, #ff8800 100%);
+  color: #1a1a1a;
+  box-shadow: 0 4px 15px rgba(255, 170, 0, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.4);
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 170, 0, 0.7), inset 0 2px 0 rgba(255, 255, 255, 0.5);
+}
+
+.primary-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(255, 170, 0, 0.5);
+}
+
+.secondary-btn {
+  background: rgba(30, 41, 59, 0.85);
+  color: #e2e8f0;
+  border: 1px solid #475569;
+}
+
+.secondary-btn:hover {
+  background: rgba(51, 65, 85, 0.95);
+  border-color: #64748b;
+}
+
+.pulse {
+  animation: btnPulse 1.8s infinite;
+}
+
+@keyframes btnPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(255, 170, 0, 0.5);
+  }
+  50% {
+    transform: scale(1.03);
+    box-shadow: 0 6px 25px rgba(255, 170, 0, 0.8);
+  }
+}
+
+.high-score-display {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary-color);
+  letter-spacing: 1px;
+}
+
+/* Touch Controls for Mobile/Tablet */
+.touch-controls {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.touch-controls.hidden {
+  display: none;
+}
+
+.touch-zone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+}
+
+.touch-action-buttons {
+  position: absolute;
+  bottom: 24px;
+  right: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  pointer-events: auto;
+}
+
+.touch-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  transition: transform 0.1s ease, background 0.1s ease;
+  user-select: none;
+}
+
+.touch-btn:active {
+  transform: scale(0.9);
+}
+
+.bomb-btn {
+  border-color: #ff3366;
+  box-shadow: 0 0 12px rgba(255, 51, 102, 0.4);
+}
+
+.autofire-btn.active {
+  border-color: #00d2ff;
+  background: rgba(0, 210, 255, 0.25);
+  box-shadow: 0 0 12px rgba(0, 210, 255, 0.5);
+}
+
+.btn-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.btn-label {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+/* Score Boxes and Badges */
+.final-score-box {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 16px 28px;
+  border-radius: 12px;
+  margin: 15px 0;
+  text-align: center;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  color: #94a3b8;
+}
+
+.final-score-num {
+  font-family: var(--arcade-font);
+  font-size: 38px;
+  color: var(--primary-color);
+  margin-top: 4px;
+  text-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+}
+
+.new-high-score {
+  color: #00ffaa;
+  font-weight: 800;
+  font-size: 12px;
+  margin-top: 6px;
+  animation: flash 1s infinite;
+}
+
+@keyframes flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.celebration-badge {
+  background: #ffcc00;
+  color: #000;
+  font-weight: 900;
+  font-size: 14px;
+  padding: 4px 14px;
+  border-radius: 12px;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+.trophy-icon {
+  font-size: 64px;
+  filter: drop-shadow(0 0 20px rgba(255, 204, 0, 0.8));
+  animation: bounce 1.2s infinite alternate;
+}
+
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-12px); }
+}
+
+.game-over-title {
+  color: #ff3366;
+  font-family: var(--arcade-font);
+  font-size: 36px;
+  letter-spacing: 2px;
+}
